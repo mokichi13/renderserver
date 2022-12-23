@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -18,5 +19,7 @@ func main() {
 		return c.JSON(http.StatusOK, now)
 	})
 
+	// set middleware
+	e.Use(middleware.Logger())
 	e.Logger.Fatal(e.Start(":8080"))
 }
