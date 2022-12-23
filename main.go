@@ -1,21 +1,22 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("ok"))
+	e := echo.New()
+	e.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, "ok")
 	})
-	http.HandleFunc("/time", func(w http.ResponseWriter, r *http.Request) {
-
+	e.GET("/time", func(c echo.Context) error {
 		now := strconv.Itoa(int(time.Now().Unix()))
-		w.Write([]byte(now))
+		return c.JSON(http.StatusOK, now)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	e.Logger.Fatal(e.Start(":8080"))
 }
