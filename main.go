@@ -12,16 +12,18 @@ import (
 )
 
 var u struct {
-	id int
-	m  sync.Mutex
+	index int
+	id    []int
+	m     sync.Mutex
 }
 
 func create() int {
 	u.m.Lock()
 	defer u.m.Unlock()
 
-	u.id++
-	return u.id
+	u.index++
+	u.id = append(u.id, u.index)
+	return u.index
 }
 
 func main() {
@@ -37,7 +39,7 @@ func main() {
 		return c.JSON(http.StatusOK, fmt.Sprintf("{id: %d}", create()))
 	})
 	e.GET("/users", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, u)
+		return c.JSON(http.StatusOK, u.id)
 	})
 
 	// set middleware
