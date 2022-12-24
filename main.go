@@ -18,7 +18,7 @@ var u struct {
 
 func create() int {
 	u.m.Lock()
-	defer u.m.Lock()
+	defer u.m.Unlock()
 
 	u.id++
 	return u.id
