@@ -43,6 +43,10 @@ func main() {
 	})
 
 	// set middleware
+	middleware.DefaultLoggerConfig.Skipper = func(c echo.Context) bool {
+		return c.Request().URL.Path == "/health"
+	}
 	e.Use(middleware.Logger())
 	e.Logger.Fatal(e.Start(":8080"))
+
 }
